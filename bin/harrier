@@ -1,0 +1,32 @@
+#!/usr/bin/ruby
+
+require 'optparse'
+require './lib/harrier/client'
+
+options = {}
+url_or_path = ARGV.first
+
+OptionParser.new do |opts|
+
+  opts.banner = "Usage: harrier [<url> | <schema.yml>] [options]"
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+
+end.parse!
+
+if url_or_path.nil?
+  $stderr.puts "Run '#{$0} -h' for help."
+  exit 1
+elsif File.exist?(url_or_path)
+  schema = File.open(url_or_path).read
+else
+  schema = open(url_or_path).read
+end
+
+client = Harrier::Client.new(schema, options)
+client.parse do |entry|
+  puts entry
+end
