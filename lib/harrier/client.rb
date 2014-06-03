@@ -56,6 +56,8 @@ module Harrier
         io = open_file(options[:url])
         if encoding = options[:encoding]
           io.read.force_encoding(encoding).encode('utf-8')
+        else
+          io
         end
       end
     end
