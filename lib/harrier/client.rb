@@ -48,8 +48,12 @@ module Harrier
       end
     end
 
+    def identifier
+      options[:identifier]
+    end
+
     def build_record(row)
-      Hash.new.tap do |data|
+      { identifier: identifier }.tap do |data|
         options[:fields].each do |key, target|
           data[key.to_sym] = row[target]
         end
@@ -58,7 +62,7 @@ module Harrier
 
     def open_file(url)
       puts "Read file at: #{url}"
-      open(url)
+      open(url, read_timeout: nil)
     end
 
     def file
