@@ -34,7 +34,7 @@ module Harrier
     end
 
     def validate_options!
-      %i(identifier fields url).each do |key|
+      %i(token fields url).each do |key|
         raise ":#{key} is missing" unless options.key?(key)
       end
     end
@@ -48,12 +48,12 @@ module Harrier
       end
     end
 
-    def identifier
-      options[:identifier]
+    def token
+      options[:token]
     end
 
     def build_record(row)
-      { identifier: identifier }.tap do |data|
+      { token: token }.tap do |data|
         options[:fields].each do |key, target|
           data[key.to_sym] = row[target]
         end
