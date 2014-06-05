@@ -7,11 +7,21 @@ module Harrier
 
     attr_accessor :options
 
-    def initialize(schema, options = {})
-      self.options = YAML.load(schema)
+    def initialize(source, options = {})
+      self.options = load_schema(source)
         .inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
         .merge(options)
       validate_options!
+    end
+
+    def load_schema(source)
+      if source.is_a?(Hash)
+        source
+      elsif File.exist?(source)
+        YAML.load_file(source)
+      else
+        YAML.load(open(source).read)
+      end
     end
 
     def slice(hash, *keys)

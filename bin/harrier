@@ -9,7 +9,7 @@ require 'optparse'
 require 'harrier/client'
 
 options = {}
-url_or_path = ARGV.first
+source = ARGV.first
 
 OptionParser.new do |opts|
 
@@ -25,13 +25,9 @@ end.parse!
 if url_or_path.nil?
   $stderr.puts "Run '#{$0} -h' for help."
   exit 1
-elsif File.exist?(url_or_path)
-  schema = File.open(url_or_path).read
-else
-  schema = open(url_or_path).read
 end
 
-client = Harrier::Client.new(schema, options)
+client = Harrier::Client.new(source, options)
 client.parse do |entry|
   puts entry
 end
