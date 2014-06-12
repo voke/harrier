@@ -22,7 +22,7 @@ OptionParser.new do |opts|
 
 end.parse!
 
-if url_or_path.nil?
+if source.nil?
   $stderr.puts "Run '#{$0} -h' for help."
   exit 1
 end
