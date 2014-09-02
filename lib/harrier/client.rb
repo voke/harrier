@@ -55,7 +55,11 @@ module Harrier
     def build_record(row)
       { token: token }.tap do |data|
         options[:fields].each do |key, target|
-          data[key.to_sym] = row[target]
+          if target
+            data[key.to_sym] = row[target]
+          else
+            data[key.to_sym] = nil
+          end
         end
       end
     end
