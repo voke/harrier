@@ -7,6 +7,8 @@ module Harrier
 
     attr_accessor :options
 
+    OPTION_NAMES = %i(token fields url)
+
     def initialize(source, options = {})
       self.options = load_schema(source)
         .inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
@@ -24,17 +26,14 @@ module Harrier
       end
     end
 
-    def slice(hash, *keys)
-      keys = keys.select { |k| hash.key?(k) }
-      Hash[keys.zip(hash.values_at(*keys))]
-    end
-
     def csv_options
-      slice(options, :col_sep, :headers, :quote_char)
+      options.dup.tap do |opts|
+        OPTION_NAMES.each { |key| opts.delete(key) }
+      end
     end
 
     def validate_options!
-      %i(token fields url).each do |key|
+      OPTION_NAMES.each do |key|
         raise ":#{key} is missing" unless options.key?(key)
       end
     end
