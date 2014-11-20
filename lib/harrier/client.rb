@@ -30,7 +30,7 @@ module Harrier
     end
 
     def csv_options
-      slice(options, :col_sep, :headers, :quote_char)
+      slice(options, :col_sep, :headers, :quote_char, :row_sep)
     end
 
     def validate_options!
